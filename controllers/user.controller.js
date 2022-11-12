@@ -1,6 +1,6 @@
 // var jwt = require("jsonwebtoken");
 var common = require("../config/common");
-var User = require("../models/user_schema");
+var User = require("../models/user.schema");
 var common = require("../config/common");
 
 
@@ -77,11 +77,18 @@ module.exports.addUser = async (req, res, next) => {
       image: image,
     });
     const data = await user.save();
+    const token = await common.generateToken({ id: data._id.toString(), email: data.email });
     res.status(200).send({
       success: true,
       statuscode: 200,
       message: email + "has been registered successfully",
-      data: data,
+      userId: user._id,
+      email: user.email,
+      userName: user.fullname,
+      phoneno: user.phoneno,
+      role: user.role,
+      token: token,
+      expireTokenTime: new Date().getTime() + 60 * 24 * 60 * 60 * 1000,
     });
   } catch (error) {
     console.log(error);

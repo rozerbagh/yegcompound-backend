@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 // var db = require('../config/db').db3;
-var _conf = require('./general');
+var _conf = require('../config/general');
 var User = require("../models/user.schema");
 
 const expiringTime = new Date().getTime() + (60 * 24 * 60 * 60 * 1000)
@@ -14,7 +14,7 @@ module.exports.checkToken = async (req, res, next) => {
     try {
         var token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
         if (token) {
-            if (token.startsWith('Bearer ')) {
+            if (token.startsWith('Bearer ') || token.startsWith('bearer ')) {
                 token = token.slice(7, token.length);
             }
             const decoded = jwt.verify(token, _conf.secretKey);

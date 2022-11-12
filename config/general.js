@@ -1,6 +1,6 @@
 module.exports = {
     weekEnd: 6,
-    secretKey: 'lemarchnadisecret',
+    secretKey: 'lemarchnadisecretauth',
     session_expiry: 30,
     api_authentication: false,
     token_expiresIn: { expiresIn: 3000 }

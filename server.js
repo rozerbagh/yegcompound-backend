@@ -11,7 +11,8 @@ require('dotenv').config();
 var cors = require('cors');
 
 
-const userRoutes = require('./routes/user_route');
+const userRoutes = require('./routes/user.routes');
+const appsRoutes = require('./routes/app.routes');
 
 var corsOptions = {
   "origin": "*",
@@ -67,6 +68,7 @@ app.use(bodyParser.json())
 
 
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/app', appsRoutes);
 app.use(express.static('public'));
 app.use(express.json({ limit: '150mb' }));
 app.use(express.urlencoded({ extended: true, limit: '150mb' }));
