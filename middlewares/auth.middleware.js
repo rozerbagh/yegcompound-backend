@@ -16,18 +16,26 @@ const checkToken = async (req, res, next) => {
         if (token) {
             if (token.startsWith('Bearer ') || token.startsWith('bearer ')) {
                 token = token.slice(7, token.length);
+                const decoded = jwt.verify(token, _conf.secretKey);
+
+                const user = await User.findById({ _id: decoded.id });
+                if (!user) return res.status(404).send({
+                    "statuscode": "404",
+                    "status": false,
+                    "error": "err",
+                    message: "Unauthorised Token"
+                });
+                req.payload = decoded
+                next();
+            } else {
+                return res.status(401).send({
+                    "statuscode": "401",
+                    "status": false,
+                    "error": 401,
+                    message: "Unauthorised Process"
+                });
             }
-            const decoded = jwt.verify(token, _conf.secretKey);
-            console.log(decoded)
-            const user = await User.findById({ _id: decoded.id });
-            if (!user) return res.status(404).send({
-                "statuscode": "404",
-                "status": false,
-                "error": err,
-                message: "Unauthorised Token"
-            });
-            req.payload = decoded
-            next();
+
         }
     } catch (err) {
         console.log(err)
