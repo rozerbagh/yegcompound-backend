@@ -36,6 +36,13 @@ const checkToken = async (req, res, next) => {
                 });
             }
 
+        } else {
+            return res.status(402).send({
+                "statuscode": "402",
+                "status": false,
+                "error": 402,
+                message: "Authentication parameters are missing"
+            });
         }
     } catch (err) {
         console.log(err)
