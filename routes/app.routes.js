@@ -4,6 +4,7 @@ const dataController = require("../controllers/data.controller");
 const funcController = require("../controllers/function.controller");
 const { checkToken } = require("../middlewares/auth.middleware");
 const Orders = require("../models/orders.schema");
+const Setting = require("../models/setting.model");
 
 const status = ['ordered', 'dispatched', 'shipped', 'delivered'];
 router.post("/order/add", checkToken, (req, res, next) => {
@@ -23,6 +24,22 @@ router.get("/order/getUserOrder/:userid", checkToken, (req, res, next) =>
 );
 router.delete("/order/delete/:id", checkToken, (req, res, next) =>
     dataController.destroy(req, res, next, Orders)
+);
+
+// settings
+router.post("/setting/add", checkToken, (req, res, next) => {
+    dataController.create(req, res, next, Setting);
+});
+router.patch("/setting/update/:id", checkToken, (req, res, next) =>
+    dataController.update(req, res, next, Setting)
+);
+
+router.get("/setting/all", checkToken, (req, res, next) =>
+    dataController.index(req, res, next, Setting, { path: null })
+);
+
+router.delete("/setting/delete/:id", checkToken, (req, res, next) =>
+    dataController.destroy(req, res, next, Setting)
 );
 
 module.exports = router;

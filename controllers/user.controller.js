@@ -5,7 +5,7 @@ var common = require("../config/common");
 
 
 //userlogin
-module.exports.userLogin = async (req, res) => {
+const userLogin = async (req, res) => {
   // console.log(req.body);
 
   try {
@@ -39,7 +39,7 @@ module.exports.userLogin = async (req, res) => {
 
 
 //addusers
-module.exports.addUser = async (req, res, next) => {
+const addUser = async (req, res, next) => {
   try {
     const exitingUser = await User.find({ email: req.body.email });
 
@@ -98,7 +98,7 @@ module.exports.addUser = async (req, res, next) => {
   }
 };
 //getallusers
-module.exports.getallUser = async (req, res) => {
+const getallUser = async (req, res) => {
   const admin = parseInt(req.query.admin);
   try {
     const users = await User.find({});
@@ -122,7 +122,7 @@ module.exports.getallUser = async (req, res) => {
   }
 };
 
-module.exports.getUserDetails = async (req, res) => {
+const getUserDetails = async (req, res) => {
   try {
     const admin = parseInt(req.query.admin);
     const user = await User.findById({ _id: req.params.id });
@@ -146,7 +146,7 @@ module.exports.getUserDetails = async (req, res) => {
   }
 };
 
-module.exports.updateUserDetails = async (req, res) => {
+const updateUserDetails = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body);
     const getuser = await User.findById({ _id: req.params.id });
@@ -173,7 +173,7 @@ module.exports.updateUserDetails = async (req, res) => {
   }
 };
 
-module.exports.deleteUser = async (req, res, next) => {
+const deleteUser = async (req, res, next) => {
   try {
     const admin = parseInt(req.query.admin);
     const user = await User.findByIdAndDelete({ _id: req.params.id });
@@ -200,3 +200,12 @@ module.exports.deleteUser = async (req, res, next) => {
     });
   }
 };
+
+module.exports = {
+  userLogin,
+  getallUser,
+  deleteUser,
+  updateUserDetails,
+  getUserDetails,
+  addUser,
+}

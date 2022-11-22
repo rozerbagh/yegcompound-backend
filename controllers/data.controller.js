@@ -19,6 +19,7 @@ const index = async (req, res, next, model, attr) => {
                 .send({ data: data, count: count, responseStatus: 1 });
         }
     } catch (error) {
+        console.log(error)
         res.status(500).send({ message: error, responseStatus: 0 });
     }
 };
