@@ -15,7 +15,7 @@ const userRoutes = require('./routes/user.routes');
 const appsRoutes = require('./routes/app.routes');
 
 var corsOptions = {
-  "origin": ["*", "https://yegcompounding.com", "https://admin.yegcompounding.com"],
+  "origin": "*",
   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
   "preflightContinue": false,
   "optionsSuccessStatus": 200
