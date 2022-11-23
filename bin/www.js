@@ -6,8 +6,9 @@
 
 var app = require('../server');
 var debug = require('debug')('ecommercevue-master:server');
-var http = require('http');
-
+var http = require('https');
+var fs = require('fs');
+var path = require('path');
 /**
  * Get port from environment and store in Express.
  */
@@ -19,7 +20,10 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.createServer({
+  key: fs.readFileSync(path.join(__dirname, '../keys', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, '../keys', 'cert.pem')),
+}, app);
 
 /**
  * Listen on provided port, on all network interfaces.
