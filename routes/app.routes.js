@@ -4,6 +4,7 @@ const dataController = require("../controllers/data.controller");
 const funcController = require("../controllers/function.controller");
 const { checkToken } = require("../middlewares/auth.middleware");
 const Orders = require("../models/orders.schema");
+const Testimonials = require("../models/testimonials.schema")
 const Setting = require("../models/setting.model");
 
 const status = ['ordered', 'dispatched', 'shipped', 'delivered'];
@@ -41,5 +42,22 @@ router.get("/setting/all", checkToken, (req, res, next) =>
 router.delete("/setting/delete/:id", checkToken, (req, res, next) =>
     dataController.destroy(req, res, next, Setting)
 );
+
+// testimonaials
+router.post("/testimonial/add", checkToken, (req, res, next) => {
+    dataController.create(req, res, next, Testimonials);
+});
+router.get("/testimonial/all", checkToken, (req, res, next) => {
+    dataController.index(req, res, next, Testimonials, { path: "" });
+});
+router.get("/testimonial/:id", checkToken, (req, res, next) => {
+    dataController.show(req, res, next, Testimonials);
+});
+router.patch("/testimonial/update/:id", checkToken, (req, res, next) => {
+    dataController.update(req, res, next, Testimonials);
+});
+router.delete("/testimonial/delete/:id", checkToken, (req, res, next) => {
+    dataController.destroy(req, res, next, Testimonials);
+});
 
 module.exports = router;

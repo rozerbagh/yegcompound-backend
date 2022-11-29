@@ -58,8 +58,12 @@ const orderSchema = new Schema({
     status: {
         type: String,
         required: true,
-        default: 'ordered'
+        default: 'pending'
     },
+    comments: {
+        type: String,
+        default: ''
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model("orders", orderSchema); 
