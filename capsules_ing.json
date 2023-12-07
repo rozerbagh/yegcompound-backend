@@ -1,0 +1,416 @@
+[
+  {
+    "pack_size": 1,
+    "price": 0
+  },
+  {
+    "name": "Amitryptyline",
+    "pack_size": 5,
+    "price": 22
+  },
+  {
+    "name": "Acetylecysteine",
+    "pack_size": 25,
+    "price": 25
+  },
+  {
+    "name": "Baclofen",
+    "pack_size": 5,
+    "price": 42
+  },
+  {
+    "name": "Bitterness Supressor",
+    "pack_size": 30,
+    "price": 30
+  },
+  {
+    "name": "Capsublend H",
+    "pack_size": 100,
+    "price": 22
+  },
+  {
+    "name": "Capsublend P",
+    "pack_size": 100,
+    "price": 22
+  },
+  {
+    "name": "Capsublend S",
+    "pack_size": 100,
+    "price": 22
+  },
+  {
+    "name": "Capsule",
+    "pack_size": 1000,
+    "price": 24
+  },
+  {
+    "name": "Cellulose",
+    "pack_size": 100,
+    "price": 8.55
+  },
+  {
+    "name": "Chocholate Base",
+    "pack_size": 100,
+    "price": 5
+  },
+  {
+    "name": "Clindamycin",
+    "pack_size": 10,
+    "price": 26
+  },
+  {
+    "name": "Clomiphene",
+    "pack_size": 5,
+    "price": 97
+  },
+  {
+    "name": "Clotrimazole",
+    "pack_size": 5,
+    "price": 9
+  },
+  {
+    "name": "Cyanocobalamine",
+    "pack_size": 1,
+    "price": 65
+  },
+  {
+    "name": "Cyclobenzaprine",
+    "pack_size": 100,
+    "price": 380
+  },
+  {
+    "name": "Dexamethasone",
+    "pack_size": 5,
+    "price": 112
+  },
+  {
+    "name": "DHEA",
+    "pack_size": 10,
+    "price": 59
+  },
+  {
+    "name": "Diclofenac",
+    "pack_size": 250,
+    "price": 91.38
+  },
+  {
+    "name": "Diffusimax",
+    "pack_size": 500,
+    "price": 72.03
+  },
+  {
+    "name": "Disulfiram",
+    "pack_size": 50,
+    "price": 95
+  },
+  {
+    "name": "Erythromycin Red",
+    "pack_size": 25,
+    "price": 35
+  },
+  {
+    "name": "Estradiol",
+    "pack_size": 1,
+    "price": 25
+  },
+  {
+    "name": "Estrone",
+    "pack_size": 1,
+    "price": 110
+  },
+  {
+    "name": "Estriol",
+    "pack_size": 1,
+    "price": 135
+  },
+  {
+    "name": "Ethoxy Diglycol",
+    "pack_size": 250,
+    "price": 29.62
+  },
+  {
+    "name": "Falvouring Agent",
+    "pack_size": 30,
+    "price": 30
+  },
+  {
+    "name": "Gabapentin",
+    "pack_size": 100,
+    "price": 285
+  },
+  {
+    "name": "Glycerine",
+    "pack_size": 500,
+    "price": 15
+  },
+  {
+    "name": "Glycopyrrolate",
+    "pack_size": 1,
+    "price": 105
+  },
+  {
+    "name": "Gum Base",
+    "pack_size": 100,
+    "price": 20
+  },
+  {
+    "name": "HRT Base",
+    "pack_size": 500,
+    "price": 95
+  },
+  {
+    "name": "Hydrocortizone",
+    "pack_size": 5,
+    "price": 14
+  },
+  {
+    "name": "Hypermellose",
+    "pack_size": 100,
+    "price": 23
+  },
+  {
+    "name": "Ibuprofen",
+    "pack_size": 100,
+    "price": 16.4
+  },
+  {
+    "name": "Indigo Blue",
+    "pack_size": 25,
+    "price": 21
+  },
+  {
+    "name": "Ketoprofen",
+    "pack_size": 100,
+    "price": 68.37
+  },
+  {
+    "name": "Ketamine",
+    "pack_size": 25,
+    "price": 118
+  },
+  {
+    "name": "Lansoprzole",
+    "pack_size": 5,
+    "price": 56
+  },
+  {
+    "name": "Levothyroxine T4",
+    "pack_size": 0.25,
+    "price": 129
+  },
+  {
+    "name": "Lidocaine",
+    "pack_size": 25,
+    "price": 10
+  },
+  {
+    "name": "Liothyronine",
+    "pack_size": 0.25,
+    "price": 185
+  },
+  {
+    "name": "Lipoderm",
+    "pack_size": 500,
+    "price": 96.67
+  },
+  {
+    "name": "Minoxidil",
+    "pack_size": 10,
+    "price": 49
+  },
+  {
+    "name": "Meclizine",
+    "pack_size": 100,
+    "price": 159.27
+  },
+  {
+    "name": "Liquigel",
+    "pack_size": 50,
+    "price": 35
+  },
+  {
+    "name": "MDI Pump",
+    "pack_size": 25,
+    "price": 175
+  },
+  {
+    "name": "Medi RDT Base",
+    "pack_size": 100,
+    "price": 27.94
+  },
+  {
+    "name": "Menthol",
+    "pack_size": 100,
+    "price": 25.12
+  },
+  {
+    "name": "Methoxsalen",
+    "pack_size": 1,
+    "price": 272
+  },
+  {
+    "name": "Naltrexone",
+    "pack_size": 5,
+    "price": 329
+  },
+  {
+    "name": "Neomycin",
+    "pack_size": 10,
+    "price": 15
+  },
+  {
+    "name": "Nifedipine",
+    "pack_size": 5,
+    "price": 77
+  },
+  {
+    "name": "Nortriptyline",
+    "pack_size": 5,
+    "price": 93
+  },
+  {
+    "name": "Nystatin",
+    "pack_size": 100000000,
+    "price": 25.47
+  },
+  {
+    "name": "Ora Plus",
+    "pack_size": 473,
+    "price": 25.83
+  },
+  {
+    "name": "Ora Sweet",
+    "pack_size": 473,
+    "price": 25.83
+  },
+  {
+    "name": "Phenoazopyridine",
+    "pack_size": 50,
+    "price": 48.86
+  },
+  {
+    "name": "Phenobarbital",
+    "pack_size": 25,
+    "price": 29
+  },
+  {
+    "name": "PLO Gel",
+    "pack_size": 500,
+    "price": 43
+  },
+  {
+    "name": "Pregnenolone",
+    "pack_size": 5,
+    "price": 29
+  },
+  {
+    "name": "Progesterone",
+    "pack_size": 25,
+    "price": 30
+  },
+  {
+    "name": "Propylene Glycol",
+    "pack_size": 500,
+    "price": 8.05
+  },
+  {
+    "name": "Salicylic Acid",
+    "pack_size": 100,
+    "price": 7
+  },
+  {
+    "name": "Sildenafil",
+    "pack_size": 25,
+    "price": 95
+  },
+  {
+    "name": "Silica Gel",
+    "pack_size": 100,
+    "price": 24
+  },
+  {
+    "name": "Sodium Bicarbonate",
+    "pack_size": 100,
+    "price": 6
+  },
+  {
+    "name": "Sodium Chloride",
+    "pack_size": 1000,
+    "price": 5
+  },
+  {
+    "name": "SPG Supp Base",
+    "pack_size": 100,
+    "price": 12
+  },
+  {
+    "name": "Sunset Yellow",
+    "pack_size": 25,
+    "price": 12
+  },
+  {
+    "name": "Tacrolimus",
+    "pack_size": 0.5,
+    "price": 495
+  },
+  {
+    "name": "Tadalafil",
+    "pack_size": 5,
+    "price": 160
+  },
+  {
+    "name": "Testosterone",
+    "pack_size": 5,
+    "price": 38
+  },
+  {
+    "name": "Thyroid",
+    "pack_size": 25,
+    "price": 165
+  },
+  {
+    "name": "Topiclick",
+    "pack_size": 1,
+    "price": 7
+  },
+  {
+    "name": "Tramadol",
+    "pack_size": 100,
+    "price": 480
+  },
+  {
+    "name": "Transderm",
+    "pack_size": 100,
+    "price": 29
+  },
+  {
+    "name": "Tretinoin",
+    "pack_size": 1,
+    "price": 31.15
+  },
+  {
+    "name": "Troche Base",
+    "pack_size": 100,
+    "price": 16
+  },
+  {
+    "name": "Troche Mold",
+    "pack_size": 30,
+    "price": 90
+  },
+  {
+    "name": "Versapro Cream",
+    "pack_size": 500,
+    "price": 72.57
+  },
+  {
+    "name": "Versapro Gel",
+    "pack_size": 100,
+    "price": 25
+  },
+  {
+    "name": "Zinc Oxide",
+    "pack_size": 100,
+    "price": 8
+  }
+]

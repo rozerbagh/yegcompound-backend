@@ -1,9 +1,12 @@
 // var jwt = require("jsonwebtoken");
-var common = require("../config/common");
-var User = require("../models/user.schema");
-var common = require("../config/common");
-
-
+const common = require("../config/common");
+const general = require("../config/general");
+const { checkApprovedToken } = require("../middlewares/auth.middleware");
+const User = require("../models/user.schema");
+const { OAuth2Client } = require("google-auth-library");
+const { transactionalEmails, sendMail } = require("../utils/mails");
+const { emailTypes, valayDetails } = require("../utils/params");
+const client = new OAuth2Client(general.GOOGLE_CLIENT_ID);
 //userlogin
 const userLogin = async (req, res) => {
   // console.log(req.body);
@@ -11,10 +14,26 @@ const userLogin = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     console.log(user);
-    const isMatch = await common.passwordComparing(req.body.password, user.password)
+    if (user.status !== 1) {
+      res.status(401).send({
+        statuscode: 401,
+        success: false,
+        status: false,
+        token: null,
+        message:
+          req.body.email + "has not been onboarded by the administration",
+      });
+      return;
+    }
+    const isMatch = await common.passwordComparing(
+      req.body.password,
+      user.password
+    );
     if (isMatch) {
-      const token = await common.generateToken({ id: user._id.toString(), email: user.email });
-      console.log(token)
+      const token = await common.generateToken({
+        id: user._id.toString(),
+        email: user.email,
+      });
       res.status(200).send({
         status: true,
         userId: user._id,
@@ -37,20 +56,62 @@ const userLogin = async (req, res) => {
   }
 };
 
+const googleSignUp = async (req, res, next) => {
+  try {
+    // console.log({ verified: verifyGoogleToken(req.body.credential) });
+    if (req.body.credential) {
+      const verificationResponse = await common.verifyGoogleToken(
+        client,
+        req.body.credential
+      );
 
+      if (verificationResponse.error) {
+        return res.status(400).json({
+          message: verificationResponse.error,
+        });
+      }
+      req.body.username;
+      req.body.fullname;
+      req.body.email;
+      req.body.password;
+      req.body.phoneno;
+      req.body.address;
+      req.body.role;
+      req.body.status;
+      req.body.image;
+      await addUser(req, res, next);
+      const profile = verificationResponse?.payload;
+      res.status(201).json({
+        message: "Signup was successful",
+        user: {
+          profile: profile,
+          firstName: profile?.given_name,
+          lastName: profile?.family_name,
+          picture: profile?.picture,
+          email: profile?.email,
+          token: jwt.sign({ email: profile?.email }, JWT_SECRET, {
+            expiresIn: "1d",
+          }),
+        },
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "An error occurred. Registration failed.",
+    });
+  }
+};
 //addusers
-const addUser = async (req, res, next) => {
+const addUser = async (req, res, next, signUpGoogle = false) => {
   try {
     const exitingUser = await User.find({ email: req.body.email });
 
     if (exitingUser.length > 0) {
-      res
-        .status(503)
-        .send({
-          message: "unable to signup, email already exit",
-          statuscode: 503,
-          success: false
-        });
+      res.status(503).send({
+        message: "unable to signup, email already exit",
+        statuscode: 503,
+        success: false,
+      });
       return;
     }
     const {
@@ -73,23 +134,52 @@ const addUser = async (req, res, next) => {
       phoneno: phoneno,
       address: address,
       role: role,
-      status: status,
+      status: 0,
       image: image,
     });
     const data = await user.save();
-    const token = await common.generateToken({ id: data._id.toString(), email: data.email });
-    res.status(200).send({
-      success: true,
-      statuscode: 200,
-      message: email + "has been registered successfully",
-      userId: user._id,
-      email: user.email,
-      userName: user.fullname,
-      phoneno: user.phoneno,
-      role: user.role,
-      token: token,
-      expireTokenTime: new Date().getTime() + 60 * 24 * 60 * 60 * 1000,
+    const token = await common.generateToken({
+      id: data._id.toString(),
+      email: data.email,
     });
+    await transactionalEmails(
+      {
+        username: username,
+        email: email,
+        fullname: fullname,
+        subject: email + " Registration",
+      },
+      {
+        username: valayDetails.name,
+        email: valayDetails.email,
+        firstname: valayDetails.name,
+        // username: "Rozer",
+        // email: "rozerbagh456@gmail.com",
+        // fullname: "Rozer",
+      },
+      token,
+      emailTypes.approving
+    );
+    res.status(200).send({
+      requestStatus: 200,
+      status: 0,
+      success: true,
+      token: null,
+      message: email + " has to be on boarded by the administration",
+    });
+    return;
+    // res.status(200).send({
+    //   success: true,
+    //   statuscode: 200,
+    //   message: email + "has been registered successfully",
+    //   userId: user._id,
+    //   email: user.email,
+    //   userName: user.fullname,
+    //   phoneno: user.phoneno,
+    //   role: user.role,
+    //   token: token,
+    //   expireTokenTime: new Date().getTime() + 60 * 24 * 60 * 60 * 1000,
+    // });
   } catch (error) {
     console.log(error);
     res
@@ -201,6 +291,53 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+const approvedUser = async (req, res, next) => {
+  try {
+    const { usertoken } = req.body;
+    const user = await checkApprovedToken(usertoken);
+    await User.findByIdAndUpdate(user.data._id, {
+      status: 1,
+    });
+    console.log(user.data.email);
+    const senMaildata = await sendMail({
+      fromEmail: valayDetails.email,
+      toEmail: user.data.email,
+      subject: "Onboarded to the Yegcompounding",
+      text: "You have been approved by administration suppoprt to make out your orders",
+    });
+    res.send({
+      success: true,
+      approved: true,
+      message: user.data?.email + " has been on boarded",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      approved: false,
+      message: "Not able to approve",
+    });
+  }
+};
+
+const declinedUser = async (req, res, next) => {
+  try {
+    const { usertoken } = req.body;
+    const user = await checkApprovedToken(usertoken);
+    await User.findByIdAndDelete(user.data._id);
+    res.send({
+      success: true,
+      approved: true,
+      message: user.data?.email + " has been deleted",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      approved: false,
+      message: "Not able to delete",
+    });
+  }
+};
+
 module.exports = {
   userLogin,
   getallUser,
@@ -208,4 +345,7 @@ module.exports = {
   updateUserDetails,
   getUserDetails,
   addUser,
-}
+  googleSignUp,
+  approvedUser,
+  declinedUser,
+};
