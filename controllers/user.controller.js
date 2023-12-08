@@ -107,13 +107,14 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
     const exitingUser = await User.find({ email: req.body.email }).maxTimeMS(
       20000
     );
-
+    console.log("the registration process has been started");
     if (exitingUser.length > 0) {
       res.status(503).send({
         message: "unable to signup, email already exit",
         statuscode: 503,
         success: false,
       });
+      console.log("tuser exists");
       return;
     }
     const {
@@ -140,6 +141,7 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
       image: image,
     });
     const data = await user.save();
+    console.log("the registration process has been completed");
     const token = await common.generateToken({
       id: data._id.toString(),
       email: data.email,
@@ -162,6 +164,7 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
       token,
       emailTypes.approving
     );
+    console.log("the registration mail has been send to the admin");
     res.status(200).send({
       requestStatus: 200,
       status: 0,
