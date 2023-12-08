@@ -77,7 +77,6 @@ mongoose
     useFindAndModify: false,
   })
   .then((res) => {
-    // console.log(res)
     console.log("mongodb is connected successfully");
   })
   .catch((err) => {
