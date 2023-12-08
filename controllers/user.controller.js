@@ -109,12 +109,13 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
     );
     console.log("the registration process has been started");
     if (exitingUser.length > 0) {
+      console.log(exitingUser);
       res.status(503).send({
         message: "unable to signup, email already exit",
         statuscode: 503,
         success: false,
       });
-      console.log("tuser exists");
+      console.log("unable to signup, email already exit");
       return;
     }
     const {
