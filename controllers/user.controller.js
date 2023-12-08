@@ -104,7 +104,9 @@ const googleSignUp = async (req, res, next) => {
 //addusers
 const addUser = async (req, res, next, signUpGoogle = false) => {
   try {
-    const exitingUser = await User.find({ email: req.body.email });
+    const exitingUser = await User.find({ email: req.body.email }).maxTimeMS(
+      20000
+    );
 
     if (exitingUser.length > 0) {
       res.status(503).send({
