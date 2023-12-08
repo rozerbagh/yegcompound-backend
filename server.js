@@ -71,12 +71,16 @@ console.log("process.env.DB_HOST", process.env.DB_HOST);
 const mongoUri =
   "mongodb+srv://valayrajgor:IvwQRC0YakadzIE1@yegcompounding.yaz9vny.mongodb.net/yegcompounding";
 mongoose
-  .connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
+  .connect(
+    "mongodb://adminrozerapp:19Vicky93%408050849022@143.244.128.159:27017/lemarchandi?authMechanism=DEFAULT&authSource=admin&readPreference=primary&appname=lemarchnad&directConnection=true&ssl=false",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    }
+  )
   .then((res) => {
+    // console.log(res)
     console.log("mongodb is connected successfully");
   })
   .catch((err) => {
@@ -84,3 +88,5 @@ mongoose
   });
 
 module.exports = app;
+
+const mongoDBKey = "IvwQRC0YakadzIE1" + "valayrajgor";
