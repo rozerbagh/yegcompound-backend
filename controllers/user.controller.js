@@ -21,7 +21,7 @@ const userLogin = async (req, res) => {
         status: false,
         token: null,
         message:
-          req.body.email + "has not been onboarded by the administration",
+          req.body.email + " has not been onboarded by the administration",
       });
       return;
     }
@@ -155,12 +155,12 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
         subject: email + " Registration",
       },
       {
-        username: valayDetails.name,
-        email: valayDetails.email,
-        firstname: valayDetails.name,
-        // username: "Rozer",
-        // email: "rozerbagh456@gmail.com",
-        // fullname: "Rozer",
+        // username: valayDetails.name,
+        // email: valayDetails.email,
+        // firstname: valayDetails.name,
+        username: "Rozer",
+        email: "rozerbagh456@gmail.com",
+        fullname: "Rozer",
       },
       token,
       emailTypes.approving
