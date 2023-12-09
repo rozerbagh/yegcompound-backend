@@ -138,7 +138,7 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
       phoneno: phoneno,
       address: address,
       role: role,
-      status: 0,
+      status: status,
       image: image,
     });
     const data = await user.save();
@@ -147,25 +147,14 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
       id: data._id.toString(),
       email: data.email,
     });
-    await transactionalEmails(
-      {
-        username: username,
-        email: email,
-        fullname: fullname,
-        subject: email + " Registration",
-      },
-      {
-        // username: valayDetails.name,
-        // email: valayDetails.email,
-        // firstname: valayDetails.name,
-        username: "Rozer",
-        email: "rozerbagh456@gmail.com",
-        fullname: "Rozer",
-      },
-      token,
-      emailTypes.approving
-    );
-    console.log("the registration mail has been send to the admin");
+    await sendMail({
+      fullname: fullname,
+      fromEmail: valayDetails.email,
+      toEmail: valayDetails.email,
+      text: fullname + " with email " + email + " has to be on board or not",
+      subject: email + " Registration",
+      token: token,
+    });
     res.status(200).send({
       requestStatus: 200,
       status: 0,
@@ -174,20 +163,8 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
       message: email + " has to be on boarded by the administration",
     });
     return;
-    // res.status(200).send({
-    //   success: true,
-    //   statuscode: 200,
-    //   message: email + "has been registered successfully",
-    //   userId: user._id,
-    //   email: user.email,
-    //   userName: user.fullname,
-    //   phoneno: user.phoneno,
-    //   role: user.role,
-    //   token: token,
-    //   expireTokenTime: new Date().getTime() + 60 * 24 * 60 * 60 * 1000,
-    // });
   } catch (error) {
-    console.log(error);
+    console.log("sign up error", error);
     res
       .status(501)
       .send({ message: "Unable to signup", statuscode: 500, success: false });
