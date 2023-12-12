@@ -12,7 +12,7 @@ const admintoken = jwt.sign(
 );
 async function generateToken(data) {
   const token = jwt.sign(
-    { id: data.id, email: data.email, flag: 2 },
+    { id: data._id, email: data.email, flag: 2 },
     _conf.secretKey,
     {
       expiresIn: expiringTime,

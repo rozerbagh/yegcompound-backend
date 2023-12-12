@@ -1,10 +1,19 @@
 // var jwt = require("jsonwebtoken");
 const common = require("../config/common");
 const general = require("../config/general");
-const { checkApprovedToken } = require("../middlewares/auth.middleware");
+const {
+  checkApprovedToken,
+  generateToken,
+  passwordHashing,
+} = require("../middlewares/auth.middleware");
 const User = require("../models/user.schema");
 const { OAuth2Client } = require("google-auth-library");
-const { transactionalEmails, sendMail } = require("../utils/mails");
+const {
+  transactionalEmails,
+  sendMail,
+  sendOTPMail,
+  sendContactMail,
+} = require("../utils/mails");
 const { emailTypes, valayDetails } = require("../utils/params");
 const client = new OAuth2Client(general.GOOGLE_CLIENT_ID);
 //userlogin
@@ -147,14 +156,17 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
       id: data._id.toString(),
       email: data.email,
     });
-    await sendMail({
-      fullname: fullname,
-      fromEmail: valayDetails.email,
-      toEmail: valayDetails.email,
-      text: fullname + " with email " + email + " has to be on board or not",
-      subject: email + " Registration",
-      token: token,
-    });
+    await sendMail(
+      {
+        fullname: fullname,
+        fromEmail: email,
+        toEmail: [valayDetails.email, "rozerbagh@gmail.com"],
+        text: fullname + " with email " + email + " has to be on board or not",
+        subject: email + " Registration",
+        token: token,
+      },
+      false
+    );
     res.status(200).send({
       requestStatus: 200,
       status: 0,
@@ -281,13 +293,18 @@ const approvedUser = async (req, res, next) => {
     await User.findByIdAndUpdate(user.data._id, {
       status: 1,
     });
-    console.log(user.data.email);
-    const senMaildata = await sendMail({
-      fromEmail: valayDetails.email,
-      toEmail: user.data.email,
-      subject: "Onboarded to the Yegcompounding",
-      text: "You have been approved by administration suppoprt to make out your orders",
-    });
+    console.log("approvedUser", user.data);
+    await sendMail(
+      {
+        fullname: user.data.fullname,
+        fromEmail: valayDetails.email,
+        toEmail: user.data.email,
+        subject: "Ypu has been on boarded to the https://yegcompounding.com",
+        text: "You have been approved by administration suppoprt to make out your orders",
+        token: token,
+      },
+      true
+    );
     res.send({
       success: true,
       approved: true,
@@ -321,6 +338,143 @@ const declinedUser = async (req, res, next) => {
   }
 };
 
+function generateOTP(length) {
+  const digits = "0123456789";
+  let OTP = "";
+  for (let i = 0; i < length; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
+  }
+  return OTP;
+}
+
+const sendOTP = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const otp = generateOTP(6);
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          otp: otp,
+        },
+      }
+    );
+    if (!user) {
+      res.send({
+        success: false,
+        message: "user not found",
+      });
+      return;
+    }
+    await sendOTPMail(
+      {
+        fromEmail: valayDetails.email,
+        toEmail: email,
+        OTP: otp,
+      },
+      true
+    );
+    res.send({
+      success: true,
+      approved: true,
+      message: "OTP has been send to your email",
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      approved: false,
+      message: "Internal Server error",
+    });
+  }
+};
+
+const verifyOTP = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+    const user = await User.find({ email: email });
+    console.log(user);
+    if (!user) {
+      res.send({
+        success: false,
+        message: "user not found",
+      });
+      return;
+    } else if (otp != user[0].otp) {
+      res.status(402).send({
+        success: false,
+        message: "In valid OTP",
+      });
+      return;
+    }
+    const token = await generateToken(user[0]);
+    res.status(200).send({
+      success: true,
+      approved: true,
+      token: token,
+      message: "OTP Verified",
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      approved: false,
+      message: "Internal Server error",
+    });
+  }
+};
+
+const resetPassword = async (req, res, next) => {
+  try {
+    const { password } = req.body;
+    const user = req.payload;
+    console.log(user);
+    const hashPassword = await passwordHashing(password);
+    await User.findOneAndUpdate(
+      { email: user.email },
+      { $set: { password: hashPassword } }
+    );
+    if (!user) {
+      res.send({
+        success: false,
+        message: "user not found",
+      });
+      return;
+    }
+    res.status(200).send({
+      success: true,
+      approved: true,
+      message: "Password Reset successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Internal Server error",
+    });
+  }
+};
+
+const sendContactForm = async (req, res) => {
+  try {
+    const { email, fullname, subject, message } = req.body;
+    await sendContactMail({
+      fullname: fullname,
+      fromEmail: email,
+      toEmail: valayDetails.email,
+      subject: subject,
+      message: message,
+    });
+    res.status(200).send({
+      success: true,
+      message: "Thanks for contacting will get back to u shortly !",
+    });
+  } catch (err) {
+    res.status(500).send({
+      success: false,
+      message: "Internal Server error",
+    });
+  }
+};
+
 module.exports = {
   userLogin,
   getallUser,
@@ -331,4 +485,8 @@ module.exports = {
   googleSignUp,
   approvedUser,
   declinedUser,
+  sendOTP,
+  verifyOTP,
+  resetPassword,
+  sendContactForm,
 };

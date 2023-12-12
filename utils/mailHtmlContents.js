@@ -1,60 +1,13 @@
-const { default: axios } = require("axios");
-const nodemailer = require("nodemailer");
-const { emailTypes, valayDetails } = require("./params");
-const { createHtmlFromJSON, approvalHtml } = require("./mailHtmlContents");
-let frontendbaseurl = "https://admin.yegcompounding.com";
-if (process.env.NODE === "dev") {
-  frontendbaseurl = "https://admin.yegcompounding.com";
-  // frontendbaseurl = "http://localhost:4000";
-}
-// Create a transporter using your SMTP configuration
-let transporter = nodemailer.createTransport({
-  host: "smtp-relay.sendinblue.com", // Replace with your SMTP host
-  port: 587, // Replace with your SMTP port (e.g., 587 for TLS, 465 for SSL)
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: "valayrajgor@gmail.com", // Replace with your email address
-    pass: "JsbdktzpLM1NjcY2", // Replace with your email password or an app-specific password
-  },
-});
-
-async function sendMail(
-  { fullname, fromEmail, toEmail, subject, text, token },
-  isApprovalMail = false
-) {
-  const _approvalHtml = approvalHtml({
-    frontendbaseurl: frontendbaseurl,
-    fullname: fullname,
-    token: token,
-  });
-  // Email content
-  let mailOptions = {
-    from: fromEmail, // Replace with your email address
-    to: toEmail, // Replace with the recipient's email address
-    subject: subject,
-    text: text, // You can use HTML for the email content as well
-    html: isApprovalMail ? `<h1>Approved</h1>` : _approvalHtml,
-  };
-
-  // Send email
-  try {
-    const data = await transporter.sendMail(mailOptions);
-    return {
-      data: data,
-      error: null,
-    };
-  } catch (error) {
-    return {
-      data: null,
-      error: error,
-    };
-  }
-}
-
-const brevoAPIKey =
-  "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";
-const approvingEmailbody = (senderBodyData, recieverBodyData, token) => {
-  const htmlcontent = `
+const {
+  logo,
+  userdetails,
+  orderHeader,
+  clientDetails,
+  orderTableHead,
+  orderTableBody,
+  orderSubTotal,
+} = require("./invoice/emailer");
+const approvalHtml = ({ frontendbaseurl, fullname, token }) => `
 <!DOCTYPE html>
 <html
   xmlns:v="urn:schemas-microsoft-com:vml"
@@ -62,7 +15,7 @@ const approvingEmailbody = (senderBodyData, recieverBodyData, token) => {
   lang="en"
 >
   <head>
-    <title>${senderBodyData.username} Approval of Registration</title>
+    <title>${fullname} Approval of Registration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--[if mso
@@ -282,7 +235,7 @@ const approvingEmailbody = (senderBodyData, recieverBodyData, token) => {
                                     "
                                   >
                                     <p style="margin: 0">
-                                      The user name as ${senderBodyData.fullname} has signed
+                                      The user name as ${fullname} has signed
                                       newly.<br />Access the Permission for the
                                       completion of the user registration !
                                     </p>
@@ -586,132 +539,51 @@ const approvingEmailbody = (senderBodyData, recieverBodyData, token) => {
 </html>
 
 `;
-  const body = {
-    sender: {
-      email: recieverBodyData.email,
-      name: recieverBodyData.fullname,
-    },
-    to: [
-      {
-        email: recieverBodyData.email,
-        name: recieverBodyData.fullname,
-      },
-    ],
-    subject: senderBodyData.subject,
-    htmlContent: htmlcontent,
-  };
 
-  return body;
-};
-async function transactionalEmails(
-  senderBodyData,
-  recieverBodyData,
-  token,
-  type
-) {
-  try {
-    console.log(senderBodyData, recieverBodyData, token, type);
-    var body = approvingEmailbody(senderBodyData, recieverBodyData, token);
-    if (type === emailTypes.decline) {
-      body = approvingEmailbody(senderBodyData, recieverBodyData, token);
-    }
-    const data = await axios.post("https://api.brevo.com/v3/smtp/email", body, {
-      headers: {
-        "api-key": brevoAPIKey,
-      },
-    });
-    console.log("succes mail send");
-    return { data: data, error: null };
-  } catch (error) {
-    console.log("failed mail send", error.response);
-    return { data: null, error: error.response };
-  }
+function createHtmlFromJSON(jsonData) {
+  console.log(jsonData);
+  const _logo = logo(jsonData);
+  const _userdetails = userdetails(jsonData);
+  let dateofinvoice = new Date(jsonData.createdAt).toISOString();
+  const _orderHeader = orderHeader({
+    ...jsonData,
+    dateofinvoice: dateofinvoice,
+  });
+  const _clientDetails = clientDetails(jsonData);
+  const _orderTableHead = orderTableHead(jsonData);
+  let _orderTableBody = "";
+  jsonData?.ingredients.map(
+    (ele, idx) => (_orderTableBody += orderTableBody({ index: idx, ...ele }))
+  );
+  const _orderSubTotal = orderSubTotal(jsonData);
+
+  let html = `<table
+      class="nl-container"
+      width="200px"
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+      role="presentation"
+      style="mso-table-lspace: 0; mso-table-rspace: 0; background-color: #fff"
+    >
+      <tbody>
+        <tr>
+          <td>`;
+
+  html += _logo;
+  html += _userdetails;
+  html += _orderHeader;
+  html += _clientDetails;
+  html += _orderTableHead;
+  html += _orderTableBody;
+  html += _orderSubTotal;
+
+  html += `</td>
+        </tr>
+      </tbody>
+    </table>`;
+
+  return html;
 }
 
-async function sendInvoiceMail({ fromEmail, toEmail, subject, text, data }) {
-  const invoiceHTML = createHtmlFromJSON(data);
-  // Email content
-  let mailOptions = {
-    from: fromEmail, // Replace with your email address
-    to: toEmail, // Replace with the recipient's email address
-    subject: subject,
-    text: text, // You can use HTML for the email content as well
-    html: invoiceHTML,
-  };
-
-  // Send email
-  try {
-    const data = await transporter.sendMail(mailOptions);
-    return {
-      data: data,
-      error: null,
-    };
-  } catch (error) {
-    return {
-      data: null,
-      error: error,
-    };
-  }
-}
-
-async function sendOTPMail({ fromEmail, toEmail, OTP }) {
-  // Email content
-  let mailOptions = {
-    from: fromEmail, // Replace with your email address
-    to: toEmail, // Replace with the recipient's email address
-    subject: "Your OTP Code",
-    text: `Your OTP (One-Time Password) is: ${OTP}`,
-  };
-
-  // Send email
-  try {
-    const data = await transporter.sendMail(mailOptions);
-    return {
-      data: data,
-      error: null,
-    };
-  } catch (error) {
-    return {
-      data: null,
-      error: error,
-    };
-  }
-}
-
-async function sendContactMail({
-  fullname,
-  fromEmail,
-  toEmail,
-  subject,
-  message,
-}) {
-  // Email content
-  let mailOptions = {
-    from: fromEmail, // Replace with your email address
-    to: toEmail, // Replace with the recipient's email address
-    subject: `${subject} from ${fullname}`,
-    text: message,
-  };
-
-  // Send email
-  try {
-    const data = await transporter.sendMail(mailOptions);
-    return {
-      data: data,
-      error: null,
-    };
-  } catch (error) {
-    return {
-      data: null,
-      error: error,
-    };
-  }
-}
-
-module.exports = {
-  sendMail,
-  transactionalEmails,
-  sendInvoiceMail,
-  sendOTPMail,
-  sendContactMail,
-};
+module.exports = { createHtmlFromJSON, approvalHtml };
