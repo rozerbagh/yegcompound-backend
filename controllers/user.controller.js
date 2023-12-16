@@ -13,6 +13,7 @@ const {
   sendMail,
   sendOTPMail,
   sendContactMail,
+  sendInvoiceMail,
 } = require("../utils/mails");
 const { emailTypes, valayDetails } = require("../utils/params");
 const client = new OAuth2Client(general.GOOGLE_CLIENT_ID);
@@ -475,6 +476,37 @@ const sendContactForm = async (req, res) => {
   }
 };
 
+const sendInvoice = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { invoicedata } = req.body;
+    const user = User.findById({ _id: id });
+    const data = await sendInvoiceMail({
+      fromEmail: valayDetails.email,
+      toEmail: invoicedata.user.email,
+      subject: "Invoice Mail",
+      text: "The Inoivce has been attached below",
+      data: invoicedata,
+    });
+    if (data === null) {
+      res.status(400).send({
+        success: false,
+        message: "Invoice mail is unable to send!",
+      });
+      return;
+    }
+    res.status(200).send({
+      success: true,
+      message: "Invoice mail is sent!",
+    });
+  } catch (err) {
+    res.status(500).send({
+      success: false,
+      message: "Internal Server error",
+    });
+  }
+};
+
 module.exports = {
   userLogin,
   getallUser,
@@ -489,4 +521,5 @@ module.exports = {
   verifyOTP,
   resetPassword,
   sendContactForm,
+  sendInvoice,
 };

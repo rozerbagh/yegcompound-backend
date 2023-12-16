@@ -15,5 +15,6 @@ router.get("/users", userController.getallUser);
 router.get("/get/:id", userController.getUserDetails);
 router.patch("/update/:id", userController.updateUserDetails);
 router.delete("/delete/:id", userController.deleteUser);
+router.post("/admin/send-invoice/:id", userController.sendInvoice);
 
 module.exports = router;

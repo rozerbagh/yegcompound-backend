@@ -642,11 +642,13 @@ async function sendInvoiceMail({ fromEmail, toEmail, subject, text, data }) {
   // Send email
   try {
     const data = await transporter.sendMail(mailOptions);
+    console.log(data);
     return {
       data: data,
       error: null,
     };
   } catch (error) {
+    console.log(error);
     return {
       data: null,
       error: error,
