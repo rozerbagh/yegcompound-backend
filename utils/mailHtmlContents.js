@@ -544,12 +544,15 @@ function createHtmlFromJSON(jsonData) {
   console.log(jsonData);
   const _logo = logo(jsonData);
   const _userdetails = userdetails(jsonData);
-  let dateofinvoice = new Date(jsonData.createdAt).toISOString();
+  let dateofinvoice = new Date(jsonData.createdAt);
+  dateofinvoice = `${dateofinvoice.getDate()}/${
+    dateofinvoice.getMonth() + 1
+  }/${dateofinvoice.getFullYear()}`;
   const _orderHeader = orderHeader({
     ...jsonData,
     dateofinvoice: dateofinvoice,
   });
-  const _clientDetails = clientDetails(jsonData);
+  // const _clientDetails = clientDetails(jsonData);
   const _orderTableHead = orderTableHead(jsonData);
   let _orderTableBody = "";
   jsonData?.ingredients.map(
@@ -573,7 +576,7 @@ function createHtmlFromJSON(jsonData) {
   html += _logo;
   html += _userdetails;
   html += _orderHeader;
-  html += _clientDetails;
+  // html += _clientDetails;
   html += _orderTableHead;
   html += _orderTableBody;
   html += _orderSubTotal;

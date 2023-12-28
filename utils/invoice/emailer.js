@@ -283,121 +283,6 @@ const orderHeader = (data) => `<table
                       <tbody>
                         <tr>
                           <td
-                            class="column column-1"
-                            width="33.333333333333336%"
-                            style="
-                              mso-table-lspace: 0;
-                              mso-table-rspace: 0;
-                              font-weight: 400;
-                              text-align: left;
-                              padding-bottom: 15px;
-                              padding-top: 25px;
-                              vertical-align: top;
-                              border-top: 0;
-                              border-right: 0;
-                              border-bottom: 0;
-                              border-left: 0;
-                            "
-                          >
-                            <table
-                              class="image_block block-1"
-                              width="100%"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              style="mso-table-lspace: 0; mso-table-rspace: 0"
-                            >
-                              <tbody>
-                                <tr>
-                                  <td class="pad" style="width: 100%">
-                                    <div
-                                      class="alignment"
-                                      align="center"
-                                      style="line-height: 10px"
-                                    >
-                                      <img
-                                        src="https://d1oco4z2z1fhwp.cloudfront.net/templates/default/821/icon-01_2.png"
-                                        style="
-                                          display: block;
-                                          height: auto;
-                                          border: 0;
-                                          max-width: 24px;
-                                          width: 100%;
-                                        "
-                                        width="24"
-                                        alt="Image"
-                                        title="Image"
-                                      />
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              class="paragraph_block block-2"
-                              width="100%"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0;
-                                mso-table-rspace: 0;
-                                word-break: break-word;
-                              "
-                            >
-                              <tbody>
-                                <tr>
-                                  <td
-                                    class="pad"
-                                    style="
-                                      padding-bottom: 10px;
-                                      padding-left: 10px;
-                                      padding-right: 10px;
-                                      padding-top: 15px;
-                                    "
-                                  >
-                                    <div
-                                      style="
-                                        color: #fff;
-                                        font-family: Lato, Tahoma, Verdana,
-                                          Segoe, sans-serif;
-                                        font-size: 14px;
-                                        line-height: 150%;
-                                        text-align: center;
-                                        mso-line-height-alt: 21px;
-                                      "
-                                    >
-                                      <p
-                                        style="
-                                          margin: 0;
-                                          word-break: break-word;
-                                        "
-                                      >
-                                        Invoice No:
-                                      </p>
-                                      <p
-                                        style="
-                                          margin: 0;
-                                          word-break: break-word;
-                                        "
-                                      >
-                                        <strong>${
-                                          data._id.substring(0, 6) +
-                                          data._id.substring(
-                                            data._id.length - 4,
-                                            data._id.length
-                                          )
-                                        }</strong>
-                                      </p>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                          <td
                             class="column column-2"
                             width="33.333333333333336%"
                             style="
@@ -490,6 +375,10 @@ const orderHeader = (data) => `<table
                                           word-break: break-word;
                                         "
                                       >
+                                        <strong>${data._id.substring(
+                                          0,
+                                          6
+                                        )}</strong>-
                                         <strong>${data.dateofinvoice}</strong>
                                       </p>
                                     </div>
@@ -551,10 +440,10 @@ const orderHeader = (data) => `<table
                               </tbody>
                             </table>
                             <table
-                              class="paragraph_block block-2"
+                              class="paragraph_block block-1"
                               width="100%"
                               border="0"
-                              cellpadding="10"
+                              cellpadding="0"
                               cellspacing="0"
                               role="presentation"
                               style="
@@ -565,7 +454,61 @@ const orderHeader = (data) => `<table
                             >
                               <tbody>
                                 <tr>
-                                  <td class="pad">
+                                  <td
+                                    class="pad"
+                                    style="
+                                      padding-left: 10px;
+                                      padding-right: 10px;
+                                      padding-top: 10px;
+                                    "
+                                  >
+                                    <div
+                                      style="
+                                        color: #fff;
+                                        font-family: Lato, Tahoma, Verdana,
+                                          Segoe, sans-serif;
+                                        font-size: 14px;
+                                        line-height: 120%;
+                                        text-align: center;
+                                        mso-line-height-alt: 24px;
+                                      "
+                                    >
+                                      <p
+                                        style="
+                                          margin: 0;
+                                          word-break: break-word;
+                                        "
+                                      >
+                                        <span><strong>Client:</strong></span>
+                                      </p>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              class="paragraph_block block-2"
+                              width="100%"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              style="
+                                mso-table-lspace: 0;
+                                mso-table-rspace: 0;
+                                word-break: break-word;
+                              "
+                            >
+                              <tbody>
+                                <tr>
+                                  <td
+                                    class="pad"
+                                    style="
+                                      padding-bottom: 10px;
+                                      padding-left: 10px;
+                                      padding-right: 10px;
+                                    "
+                                  >
                                     <div
                                       style="
                                         color: #fff;
@@ -583,7 +526,7 @@ const orderHeader = (data) => `<table
                                           word-break: break-word;
                                         "
                                       >
-                                        Amount Paid:
+                                        ${data.user.phoneno}
                                       </p>
                                       <p
                                         style="
@@ -591,9 +534,7 @@ const orderHeader = (data) => `<table
                                           word-break: break-word;
                                         "
                                       >
-                                        <strong>${
-                                          data.need_to_pay
-                                        } (CAD)</strong>
+                                        ${data.user.email}
                                       </p>
                                     </div>
                                   </td>
@@ -936,64 +877,6 @@ const orderTableHead = (data) => `<table
                             </table>
                           </td>
                           <td
-                            class="column column-3"
-                            width="25%"
-                            style="
-                              mso-table-lspace: 0;
-                              mso-table-rspace: 0;
-                              font-weight: 400;
-                              text-align: left;
-                              padding-bottom: 5px;
-                              padding-top: 5px;
-                              vertical-align: top;
-                              border-top: 0;
-                              border-right: 0;
-                              border-bottom: 0;
-                              border-left: 0;
-                            "
-                          >
-                            <table
-                              class="paragraph_block block-1"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0;
-                                mso-table-rspace: 0;
-                                word-break: break-word;
-                              "
-                            >
-                              <tbody>
-                                <tr>
-                                  <td class="pad">
-                                    <div
-                                      style="
-                                        color: #fff;
-                                        font-family: Lato, Tahoma, Verdana,
-                                          Segoe, sans-serif;
-                                        font-size: 14px;
-                                        line-height: 120%;
-                                        text-align: center;
-                                        mso-line-height-alt: 16.8px;
-                                      "
-                                    >
-                                      <p
-                                        style="
-                                          margin: 0;
-                                          word-break: break-word;
-                                        "
-                                      >
-                                        <strong>PACK SIZE</strong>
-                                      </p>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                          <td
                             class="column column-4"
                             width="25%"
                             style="
@@ -1043,7 +926,7 @@ const orderTableHead = (data) => `<table
                                           word-break: break-word;
                                         "
                                       >
-                                        <strong>PRICE / PACK</strong>
+                                        <strong>PERCENT</strong>
                                       </p>
                                     </div>
                                   </td>
@@ -1151,64 +1034,6 @@ const orderTableBody = ({ index, ...data }) => `<table
                             </table>
                           </td>
                           <td
-                            class="column column-3"
-                            width="25%"
-                            style="
-                              mso-table-lspace: 0;
-                              mso-table-rspace: 0;
-                              font-weight: 400;
-                              text-align: left;
-                              border-bottom: 1px solid #6da3cd;
-                              padding-bottom: 5px;
-                              padding-top: 5px;
-                              vertical-align: top;
-                              border-top: 0;
-                              border-right: 0;
-                              border-left: 0;
-                            "
-                          >
-                            <table
-                              class="paragraph_block block-1"
-                              width="100%"
-                              border="0"
-                              cellpadding="10"
-                              cellspacing="0"
-                              role="presentation"
-                              style="
-                                mso-table-lspace: 0;
-                                mso-table-rspace: 0;
-                                word-break: break-word;
-                              "
-                            >
-                              <tbody>
-                                <tr>
-                                  <td class="pad">
-                                    <div
-                                      style="
-                                        color: #fff;
-                                        font-family: Lato, Tahoma, Verdana,
-                                          Segoe, sans-serif;
-                                        font-size: 14px;
-                                        line-height: 120%;
-                                        text-align: center;
-                                        mso-line-height-alt: 16.8px;
-                                      "
-                                    >
-                                      <p
-                                        style="
-                                          margin: 0;
-                                          word-break: break-word;
-                                        "
-                                      >
-                                        ${data.pack_size}
-                                      </p>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                          <td
                             class="column column-4"
                             width="25%"
                             style="
@@ -1258,7 +1083,7 @@ const orderTableBody = ({ index, ...data }) => `<table
                                           word-break: break-word;
                                         "
                                       >
-                                        ${data.price}
+                                        ${data.percent}
                                       </p>
                                     </div>
                                   </td>
@@ -1397,9 +1222,6 @@ const orderSubTotal = (data) => `<table
                                           >Subtotal:<strong>
                                             ${data.total_price} (CAD)</strong
                                           ></span
-                                        ><br /><span
-                                          >Amount Pay:
-                                          <strong>${data.need_to_pay} (CAD)</strong></span
                                         >
                                       </p>
                                     </div>
