@@ -74,6 +74,7 @@ const show = async (req, res, next, model, attr) => {
 const update = async (req, res, next, model) => {
   try {
     const data = await model.findByIdAndUpdate(req.params.id, req.body);
+    console.log(data);
     if (!data) {
       res.status(404).send({ message: "Data Not Found", responseStatus: 0 });
     } else {
@@ -81,6 +82,7 @@ const update = async (req, res, next, model) => {
         success: true,
         message: "Updated successfully",
         responseStatus: 1,
+        data,
       });
     }
   } catch (error) {
