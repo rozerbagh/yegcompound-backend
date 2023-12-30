@@ -76,4 +76,9 @@ router.get("/ingredients/get/:id", checkToken, (req, res, next) =>
 router.delete("/ingredients/delete/:id", checkToken, (req, res, next) =>
   dataController.destroy(req, res, next, Ingredients)
 );
+
+router.get(
+  "/fetch-pincode-address/:zipcode",
+  funcController.fetchAddressAsPerPincode
+);
 module.exports = router;
