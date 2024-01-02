@@ -50,7 +50,7 @@ const checkToken = async (req, res, next) => {
             error: "err",
             message: "Unauthorised Token",
           });
-        req.payload = decoded;
+        req.payload = { ...decoded, ...user };
         next();
       } else {
         return res.status(401).send({
@@ -98,6 +98,7 @@ const checkAdminToken = async (req, res, next) => {
           error: err,
           message: "Unauthorised Token",
         });
+      req.payload = { ...decoded, ...user };
       next();
     }
   } catch (err) {

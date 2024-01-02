@@ -18,6 +18,27 @@ const fetchOrdersByUser = async (req, res, next, model, attr) => {
     res.status(500).send({ message: error, responseStatus: 0 });
   }
 };
+const fetchSettingByUser = async (req, res, next, model, attr) => {
+  try {
+    const userid = req.query.admin ? req.params.userid : req.payload._id;
+    var data = await model.find({ user: userid }).populate(attr.path).exec();
+
+    if (!data) {
+      data = await model.find({ user: null }).populate(attr.path).exec();
+    }
+    if (!data) {
+      res.status(404).send({ message: "Data Not Found", responseStatus: 0 });
+    } else {
+      res.status(200).send({
+        data: data,
+        responseStatus: 1,
+        message: "Here are the setting",
+      });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error, responseStatus: 0 });
+  }
+};
 const zipCodeBase_Apikey = "1c013a40-a539-11ee-ab49-1369769a1cfd";
 const zipCodeBase_baseurl = "https://app.zipcodebase.com";
 const fetchAddressAsPerPincode = async (req, res, next) => {
@@ -51,4 +72,5 @@ const fetchAddressAsPerPincode = async (req, res, next) => {
 module.exports = {
   fetchOrdersByUser,
   fetchAddressAsPerPincode,
+  fetchSettingByUser,
 };

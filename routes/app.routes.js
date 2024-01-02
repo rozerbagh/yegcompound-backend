@@ -35,9 +35,11 @@ router.post("/setting/add", checkToken, (req, res, next) => {
 router.patch("/setting/update/:id", checkToken, (req, res, next) =>
   dataController.update(req, res, next, Setting)
 );
-
 router.get("/setting/all", checkToken, (req, res, next) =>
-  dataController.index(req, res, next, Setting, { path: null })
+  funcController.fetchSettingByUser(req, res, next, Setting, { path: "user" })
+);
+router.get("/user-setting/:userid", checkToken, (req, res, next) =>
+  funcController.fetchSettingByUser(req, res, next, Setting, { path: "user" })
 );
 
 router.delete("/setting/delete/:id", checkToken, (req, res, next) =>

@@ -7,6 +7,7 @@ const {
   passwordHashing,
 } = require("../middlewares/auth.middleware");
 const User = require("../models/user.schema");
+const Setting = require("../models/setting.model");
 const { OAuth2Client } = require("google-auth-library");
 const {
   transactionalEmails,
@@ -168,6 +169,28 @@ const addUser = async (req, res, next, signUpGoogle = false) => {
       },
       false
     );
+    try {
+      const setting1 = new Setting({
+        user: data._id,
+        markup: 20,
+        rebate: 20,
+        labour_hour_rate: 35,
+        container_cost: 2,
+        delivery_fee: 30,
+        setting_name: "compound",
+      });
+      const setting2 = new Setting({
+        user: data._id,
+        markup: 20,
+        rebate: 20,
+        labour_hour_rate: 35,
+        container_cost: 2,
+        delivery_fee: 30,
+        setting_name: "capsule",
+      });
+      await setting1.save();
+      await setting2.save();
+    } catch (err) {}
     res.status(200).send({
       requestStatus: 200,
       status: 0,
