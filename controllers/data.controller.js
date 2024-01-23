@@ -39,7 +39,7 @@ const create = async (req, res, next, model) => {
 
 const bulkCreate = async (req, res, next, model) => {
   try {
-    const data = await model.insertMany(req.data);
+    const data = await model.insertMany(req.body);
     res.status(201).send({
       success: true,
       message: "Bulk Data Added Successfully",

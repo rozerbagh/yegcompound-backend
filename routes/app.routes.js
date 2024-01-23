@@ -66,6 +66,9 @@ router.delete("/testimonial/delete/:id", checkToken, (req, res, next) => {
 router.post("/ingredients/add", checkToken, (req, res, next) => {
   dataController.create(req, res, next, Ingredients);
 });
+router.post("/ingredients/bulkAdd", checkToken, (req, res, next) => {
+  dataController.bulkCreate(req, res, next, Ingredients);
+});
 router.patch("/ingredients/update/:id", checkToken, (req, res, next) =>
   dataController.update(req, res, next, Ingredients)
 );

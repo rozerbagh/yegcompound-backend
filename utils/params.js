@@ -9,4 +9,9 @@ const emailTypes = {
   informApproveMail: "informApproveMail",
   informDeclineMail: "informDeclineMail",
 };
-module.exports = { valayDetails, emailTypes };
+
+const ingParams = {
+  "non-capsule": "non-capsule",
+  capsule: "capsule",
+};
+module.exports = { valayDetails, emailTypes, ingParams };

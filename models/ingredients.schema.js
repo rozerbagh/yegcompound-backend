@@ -14,7 +14,12 @@ const ingredientsSchema = new Schema(
     price: {
       type: Number,
       required: true,
-      default: "gm",
+      default: 0,
+    },
+    ing_type: {
+      type: String,
+      required: true,
+      default: "non-capsules",
     },
   },
   { timestamps: true }
